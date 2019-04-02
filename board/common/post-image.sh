@@ -6,6 +6,8 @@ SCRIPT_DIR="$(dirname $0)"
 BOARD_NAME="${2}"
 GENIMAGE_CFG="${SCRIPT_DIR}/../${BOARD_NAME}/genimage.cfg"
 GENIMAGE_TMP="${BUILD_DIR}/genimage.tmp"
+MKIMAGE=$HOST_DIR/bin/mkimage
+CONFIG="$O/.config"
 
 # skip rpi board name arg
 shift 1
@@ -53,6 +55,16 @@ __EOF__
 done
 
 rm -rf "${GENIMAGE_TMP}"
+
+if grep -qs "BR2_TARGET_UBOOT=y" ${CONFIG}; then
+	$MKIMAGE -A arm -O linux -T script -C none -n boot.scr \
+		-d ${SCRIPT_DIR}/boot.scr ${BINARIES_DIR}/boot.scr.uimg
+
+	sed -e "s/kernel=.*$/kernel=u-boot.bin/" -i "${BINARIES_DIR}/rpi-firmware/config.txt"
+else
+	touch "${BINARIES_DIR}/boot.scr.uimg"
+	touch "${BINARIES_DIR}/u-boot.bin"
+fi
 
 genimage                           \
 	--rootpath "${TARGET_DIR}"     \
