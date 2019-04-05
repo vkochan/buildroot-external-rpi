@@ -1,7 +1,9 @@
 config BR2_TARGET_UBOOT_BOARD_DEFCONFIG
 	string
-	default "rpi_3_32b"
+	default "rpi_3_32b" if !BR2_aarch64
+	default "rpi_3" if BR2_aarch64
 
 config BR2_TARGET_UBOOT_BOARDNAME
 	string
-	default "rpi_3_32b"
+	default "rpi_3_32b" if !BR2_aarch64
+	default "rpi_3" if BR2_aarch64

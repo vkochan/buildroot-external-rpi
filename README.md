@@ -10,4 +10,4 @@ To build this external project:
 
 U-Boot
 ======
-If u-boot is selected (BR2_TARGET_UBOOT=y) then 'rpi_32_b' (64bit support will be added soon) board is used as default.
+If u-boot is selected (BR2_TARGET_UBOOT=y) then 'rpi_3_32b' or 'rpi_3' (if 64bit mode) board is used as default.
