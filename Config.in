@@ -1,7 +1,13 @@
 config BR2_EXTERNAL_RPI
 	bool "rpi external project"
 	default y
+
 	select BR2_PACKAGE_RPI_FIRMWARE
+
+	# Required tools to create the SD image
+	select BR2_PACKAGE_HOST_DOSFSTOOLS
+	select BR2_PACKAGE_HOST_GENIMAGE
+	select BR2_PACKAGE_HOST_MTOOLS
 
 if BR2_TARGET_UBOOT
 
