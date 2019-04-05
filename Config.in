@@ -1,0 +1,7 @@
+config BR2_TARGET_UBOOT_BOARD_DEFCONFIG
+	string
+	default "rpi_3_32b"
+
+config BR2_TARGET_UBOOT_BOARDNAME
+	string
+	default "rpi_3_32b"
