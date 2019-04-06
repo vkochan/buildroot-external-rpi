@@ -3,14 +3,32 @@
 set -e
 
 SCRIPT_DIR="$(dirname $0)"
-BOARD_NAME="${2}"
-GENIMAGE_CFG="${SCRIPT_DIR}/../${BOARD_NAME}/genimage.cfg"
 GENIMAGE_TMP="${BUILD_DIR}/genimage.tmp"
 MKIMAGE=$HOST_DIR/bin/mkimage
 CONFIG="$O/.config"
 
-# skip rpi board name arg
-shift 1
+# $1 - config option
+#
+# return:
+#          empty string or config value (un-quoted)
+function br_config_get {
+	local opt=$1
+	local val=""
+
+	val=$(grep -m 1 -s "${opt}=" ${CONFIG} | awk -F '=' '{ print $2; }')
+	val="${val%\"}"
+	val="${val#\"}"
+
+	echo "${val}"
+}
+
+BOARD_NAME="$(br_config_get BR2_EXTERNAL_RPI_BOARD_NAME)"
+if [ -z "${BOARD_NAME}" ]; then
+	echo "[error] empty rpi board name"
+	exit 1
+fi
+
+GENIMAGE_CFG="${SCRIPT_DIR}/../${BOARD_NAME}/genimage.cfg"
 
 for arg in "$@"
 do

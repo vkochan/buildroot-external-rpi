@@ -1,5 +1,5 @@
-config BR2_EXTERNAL_RPI
-	bool "rpi external project"
+menuconfig BR2_EXTERNAL_RPI
+	bool "Raspberry Pi External Project"
 	default y
 
 	select BR2_PACKAGE_RPI_FIRMWARE
@@ -8,6 +8,20 @@ config BR2_EXTERNAL_RPI
 	select BR2_PACKAGE_HOST_DOSFSTOOLS
 	select BR2_PACKAGE_HOST_GENIMAGE
 	select BR2_PACKAGE_HOST_MTOOLS
+
+if BR2_EXTERNAL_RPI
+
+choice
+	prompt "RPi board"
+
+config BR2_EXTERNAL_RPI_3
+	bool "rpi3"
+
+endchoice
+
+config BR2_EXTERNAL_RPI_BOARD_NAME
+	string
+	default "rpi3" if BR2_EXTERNAL_RPI_3
 
 if BR2_TARGET_UBOOT
 
@@ -26,3 +40,5 @@ config BR2_TARGET_UBOOT_BOARDNAME
 endif
 
 endif # BR2_TARGET_UBOOT
+
+endif # BR2_EXTERNAL_RPI
