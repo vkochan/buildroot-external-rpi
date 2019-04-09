@@ -9,6 +9,8 @@ menuconfig BR2_EXTERNAL_RPI
 	select BR2_PACKAGE_HOST_GENIMAGE
 	select BR2_PACKAGE_HOST_MTOOLS
 
+	select BR2_PACKAGE_RPI_CONSOLE_INIT
+
 if BR2_EXTERNAL_RPI
 
 choice
@@ -40,5 +42,7 @@ config BR2_TARGET_UBOOT_BOARDNAME
 endif
 
 endif # BR2_TARGET_UBOOT
+
+source "$BR2_EXTERNAL_RPI_PATH/package/Config.in"
 
 endif # BR2_EXTERNAL_RPI

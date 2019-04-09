@@ -1,0 +1,7 @@
+menu "Target packages"
+
+menu "System"
+	source "$BR2_EXTERNAL_RPI_PATH/package/rpi-console-init/Config.in"
+endmenu
+
+endmenu
