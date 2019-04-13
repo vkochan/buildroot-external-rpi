@@ -1,3 +1,7 @@
+menu "Host packages"
+	source "$BR2_EXTERNAL_RPI_PATH/package/rpi-image/Config.in"
+endmenu
+
 menu "Target packages"
 
 menu "System"
