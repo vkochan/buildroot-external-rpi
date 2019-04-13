@@ -30,52 +30,46 @@ fi
 
 GENIMAGE_CFG="${SCRIPT_DIR}/../${BOARD_NAME}/genimage.cfg"
 
-for arg in "$@"
-do
-	case "${arg}" in
-		--add-pi3-miniuart-bt-overlay)
-		if ! grep -qE '^dtoverlay=' "${BINARIES_DIR}/rpi-firmware/config.txt"; then
-			echo "Adding 'dtoverlay=pi3-miniuart-bt' to config.txt (fixes ttyAMA0 serial console)."
-			cat << __EOF__ >> "${BINARIES_DIR}/rpi-firmware/config.txt"
-
-# fixes rpi3 ttyAMA0 serial console
-dtoverlay=pi3-miniuart-bt
-__EOF__
-		fi
-		;;
-
-		--gpu_mem_256=*|--gpu_mem_512=*|--gpu_mem_1024=*)
-		# Set GPU memory
-		gpu_mem="${arg:2}"
-		sed -e "/^${gpu_mem%=*}=/s,=.*,=${gpu_mem##*=}," -i "${BINARIES_DIR}/rpi-firmware/config.txt"
-		;;
-	esac
-
-done
-
 rm -rf "${GENIMAGE_TMP}"
 
 if grep -qs "BR2_aarch64=y" ${CONFIG}; then
 	GENIMAGE_CFG="${SCRIPT_DIR}/../${BOARD_NAME}/genimage-64.cfg"
 
-	# Run a 64bits kernel (armv8)
+	# Run a 64bits kernel
 	sed -e '/^kernel=/s,=.*,=Image,' -i "${BINARIES_DIR}/rpi-firmware/config.txt"
 	if ! grep -qE '^arm_64bit=1' "${BINARIES_DIR}/rpi-firmware/config.txt"; then
-		cat << __EOF__ >> "${BINARIES_DIR}/rpi-firmware/config.txt"
-
-# enable 64bits support
-arm_64bit=1
-__EOF__
+		echo "arm_64bit=1" >> "${BINARIES_DIR}/rpi-firmware/config.txt"
 	fi
+else
+	# Run a 32bits kernel
+	sed -e '/^kernel=/s,=.*,=zImage,' -i "${BINARIES_DIR}/rpi-firmware/config.txt"
+	sed -e 's/^arm_64bit=1.*$//' -i "${BINARIES_DIR}/rpi-firmware/config.txt"
+fi
 
-	# Enable uart console
+# Enable mini-uart console
+if grep -qs "BR2_RPI_CONSOLE_USE_MINI_UART=y" ${CONFIG}; then
 	if ! grep -qE '^enable_uart=1' "${BINARIES_DIR}/rpi-firmware/config.txt"; then
-		cat << __EOF__ >> "${BINARIES_DIR}/rpi-firmware/config.txt"
+		echo "enable_uart=1" >> "${BINARIES_DIR}/rpi-firmware/config.txt"
 
-# enable rpi3 ttyS0 serial console
-enable_uart=1
-__EOF__
 	fi
+else
+	sed -e 's/^enable_uart=.*$//' -i "${BINARIES_DIR}/rpi-firmware/config.txt"
+fi
+
+if grep -qs "BR2_RPI_BT_SLOW=y" ${CONFIG}; then
+	if ! grep -qE '^dtoverlay=' "${BINARIES_DIR}/rpi-firmware/config.txt"; then
+		echo "dtoverlay=pi3-miniuart-bt" >> "${BINARIES_DIR}/rpi-firmware/config.txt"
+	fi
+else
+	sed -e 's/^dtoverlay=pi3-miniuart-bt.*$//' -i "${BINARIES_DIR}/rpi-firmware/config.txt"
+fi
+
+if ! grep -qs "BR2_RPI_USE_BT=y" ${CONFIG}; then
+	if ! grep -qE '^dtoverlay=' "${BINARIES_DIR}/rpi-firmware/config.txt"; then
+		echo "dtoverlay=pi3-disable-bt" >> "${BINARIES_DIR}/rpi-firmware/config.txt"
+	fi
+else
+	sed -e 's/^dtoverlay=pi3-disable-bt.*$//' -i "${BINARIES_DIR}/rpi-firmware/config.txt"
 fi
 
 if grep -qs "BR2_TARGET_UBOOT=y" ${CONFIG}; then

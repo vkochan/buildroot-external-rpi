@@ -43,6 +43,52 @@ endif
 
 endif # BR2_TARGET_UBOOT
 
+menu Console
+
+choice
+	prompt "UART"
+
+config BR2_RPI_CONSOLE_USE_NORMAL_UART
+	bool "normal uart (ttyAMA0)"
+	depends on !BR2_RPI_BT_NORMAL
+
+comment "console and bt can't share ttyAMA0 uart"
+	depends on BR2_RPI_BT_NORMAL
+
+config BR2_RPI_CONSOLE_USE_MINI_UART
+	bool "mini-uart (slow)"
+	depends on !BR2_RPI_BT_SLOW
+
+comment "console and bt can't share mini-uart"
+	depends on BR2_RPI_BT_NORMAL
+
+endchoice
+
+endmenu
+
+menu Networking
+
+menuconfig BR2_RPI_USE_BT
+	bool "Bluetooth"
+
+if BR2_RPI_USE_BT
+
+choice
+	prompt "Serial"
+
+config BR2_RPI_BT_NORMAL
+	bool "normal bluetooth (ttyAMA0)"
+	default y
+
+config BR2_RPI_BT_SLOW
+	bool "slow bluetooth (mini-uart)"
+
+endchoice
+
+endif
+
+endmenu # Networking
+
 source "$BR2_EXTERNAL_RPI_PATH/package/Config.in"
 
 endif # BR2_EXTERNAL_RPI
