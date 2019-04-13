@@ -17,14 +17,14 @@ if BR2_EXTERNAL_RPI
 choice
 	prompt "RPi board"
 
-config BR2_EXTERNAL_RPI_3
+config BR2_RPI_3
 	bool "rpi3"
 
 endchoice
 
-config BR2_EXTERNAL_RPI_BOARD_NAME
+config BR2_RPI_BOARD_NAME
 	string
-	default "rpi3" if BR2_EXTERNAL_RPI_3
+	default "rpi3" if BR2_RPI_3
 
 if BR2_TARGET_UBOOT
 

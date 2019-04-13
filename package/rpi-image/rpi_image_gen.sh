@@ -5,7 +5,7 @@ set -e
 GENIMAGE_TMP="${BUILD_DIR}/genimage.tmp"
 MKIMAGE=$HOST_DIR/bin/mkimage
 
-BOARD_NAME="$BR2_EXTERNAL_RPI_BOARD_NAME"
+BOARD_NAME="$BR2_RPI_BOARD_NAME"
 if [ -z "${BOARD_NAME}" ]; then
 	echo "[error] empty rpi board name"
 	exit 1

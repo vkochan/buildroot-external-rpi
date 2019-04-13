@@ -22,7 +22,7 @@ function br_config_get {
 	echo "${val}"
 }
 
-BOARD_NAME="$(br_config_get BR2_EXTERNAL_RPI_BOARD_NAME)"
+BOARD_NAME="$(br_config_get BR2_RPI_BOARD_NAME)"
 if [ -z "${BOARD_NAME}" ]; then
 	echo "[error] empty rpi board name"
 	exit 1
