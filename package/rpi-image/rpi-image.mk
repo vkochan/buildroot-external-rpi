@@ -5,7 +5,6 @@
 ################################################################################
 
 RPI_IMAGE_VERSION = 0.1
-RPI_IMAGE_DEPENDENCIES = $(if $(BR2_PACKAGE_BUSYBOX),busybox)
 RPI_IMAGE_INSTALL_IMAGES = YES
 RPI_IMAGE_SOURCE =
 
