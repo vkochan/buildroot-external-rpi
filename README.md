@@ -11,3 +11,10 @@ To build this external project:
 U-Boot
 ======
 If u-boot is selected (BR2_TARGET_UBOOT=y) then 'rpi_3_32b' or 'rpi_3' (if 64bit mode) board is used as default.
+
+Image generation
+================
+The project has rpi-image package which generates rpi image and config.txt file, to
+re-generate the image and config.txt it is needed to specify 'rpi-image-reinstall' in
+make invocation. If someone needs to use post-image script then it is possible to disable
+rpi-image package and use script from board/common/post-image.sh.
