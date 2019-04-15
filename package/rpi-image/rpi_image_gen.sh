@@ -66,7 +66,7 @@ else
 fi
 
 genimage                           \
-	--rootpath "${TARGET_DIR}"     \
+	--rootpath "${O}/target"     \
 	--tmppath "${GENIMAGE_TMP}"    \
 	--inputpath "${BINARIES_DIR}"  \
 	--outputpath "${BINARIES_DIR}" \
