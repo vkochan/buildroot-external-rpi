@@ -1,0 +1,25 @@
+if BR2_TOOLCHAIN_EXTERNAL
+
+config BR2_TOOLCHAIN_EXTERNAL_RPI_ARM
+	bool "Raspberry Pi toolchain"
+	depends on BR2_arm
+	depends on BR2_ARM_EABIHF
+	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_TOOLCHAIN_HAS_SSP
+	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	select BR2_INSTALL_LIBSTDCPP
+	select BR2_HOSTARCH_NEEDS_IA32_LIBS
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_1
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+
+if BR2_TOOLCHAIN_EXTERNAL_RPI_ARM
+
+config BR2_TOOLCHAIN_EXTERNAL_PREFIX
+	default "arm-linux-gnueabihf"
+
+config BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL
+	default "toolchain-external-rpi-arm"
+
+endif
+
+endif
