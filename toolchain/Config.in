@@ -1,5 +1,0 @@
-menu "Toolchain"
-
-source "$BR2_EXTERNAL_RPI_PATH/toolchain/toolchain-external-rpi-arm/Config.in
-
-endmenu
